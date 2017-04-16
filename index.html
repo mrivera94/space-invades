@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+    <head>
+        <title>JAVASCRIPT SPACE INVADERS</title>
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/helpers.js"></script>
+    </head>
+    <body>
+        <script>
+
+        	var display, input, frames;
+        	var alienSprite, tankSprite, citySprite;
+        	var aliens, dir, tank, bullets, cities;
+
+        	function main () {
+        		display = new Display(510, 600);
+        		input = new InputHandler();
+
+        		var img = new Image();
+        		img.addEventListener("load", function() {
+
+        			init();
+        			run();
+        		});
+        		img.src = "res/sprites.png";
+        	};
+
+        	function init () {};
+
+        	function run () {};
+
+        	function update () {};
+
+        	function render () {};
+
+        	main();
+
+
+        </script>
+    </body>
+</html>
