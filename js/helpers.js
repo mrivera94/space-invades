@@ -9,7 +9,7 @@ function Display(width, height) {
 	document.body.appendChild(this.canvas);
 };
 
-Screen.prototype.drawSprite = function(sp, x, y) {
+Display.prototype.drawSprite = function(sp, x, y) {
 	this.context.drawImage(sp.img, sp.x, sp.y, sp.w, sp.h, x, y, sp.w, sp.h);
 };
 
@@ -19,7 +19,7 @@ function Sprite(img, x, y, w, h) {
 	this.x = x;
 	this.y = y;
 	this.w = w;
-	this.h - h;
+	this.h = h;
 };
 
 // Input
