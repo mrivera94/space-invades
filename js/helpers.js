@@ -9,6 +9,10 @@ function Display(width, height) {
 	document.body.appendChild(this.canvas);
 };
 
+Display.prototype.clear = function () {
+	this.context.clearRect(0, 0, this.width, this.height);
+};
+
 Display.prototype.drawSprite = function(sp, x, y) {
 	this.context.drawImage(sp.img, sp.x, sp.y, sp.w, sp.h, x, y, sp.w, sp.h);
 };

@@ -1,19 +1,19 @@
 <!doctype html>
 <html>
     <head>
-        <title>JAVASCRIPT SPACE INVADERS</title>
+        <title>JS SPACE INVADERS</title>
         <link rel="stylesheet" href="css/main.css">
         <script src="js/helpers.js"></script>
     </head>
     <body>
         <script>
 
-        	var display, input, frames;
-        	var alienSprite, tankSprite, citySprite;
-        	var aliens, dir, tank, bullets, cities;
+        	var display, input, frames, spriteFrame, levelFrame;
+        	var alienSprite, tankSprite, domeSprite;
+        	var aliens, dir, tank, bullets, domes;
 
         	function main () {
-        		display = new Display(510, 600);
+        		display = new Display(500, 600);
         		input = new InputHandler();
 
         		var img = new Image();
@@ -25,7 +25,7 @@
         				[new Sprite(this, 38, 0, 24, 16), new Sprite(this, 38, 16, 24, 16)]
         			];
         			tankSprite = new Sprite(this, 62, 0, 22, 16);
-        			citySprite = new Sprite(this);
+        			domeSprite = new Sprite(this, 84, 8, 36, 24);
 
         			init();
         			run();
@@ -33,7 +33,33 @@
         		img.src = "res/sprites.png";
         	};
 
-        	function init () {};
+        	function init () {
+        		frames = 0;
+        		spriteFrame = 0;
+        		levelFrame = 50;
+        		dir = 1;
+
+        		tank = {
+        			Sprite: tankSprite,
+        			x: (display.width - tankSprite.w) / 2,
+        			y: display.height - (30 + tankSprite.h)
+        		}
+
+        		aliens = [];
+        		var rows = [1, 0, 0, 2, 2];
+        		for (var i = 0, len = rows.length; i < len; i++) {
+        			for (var j = 0; j < 10; j++) {
+        				var a = rows[i];
+        				aliens.push({
+        					Sprite: alienSprite[a],
+        					x: 30 + j*30 + [0, 4, 0][a],
+        					y: 30 + i*30,
+        					w: alienSprite[a][0].w,
+        					h: alienSprite[a][0].h
+        				});
+        			}
+        		}
+        	};
 
         	function run () {
         		var loop = function() {
@@ -45,10 +71,50 @@
         		window.requestAnimationFrame(loop, display.canvas);
         	};
 
-        	function update () {};
+        	function update () {
+
+        		if (input.isDown(37)) { //left
+        			tank.x -= 4; 
+        		}
+
+        		if (input.isDown(39)) { //right
+        			tank.x += 4;
+        		}
+
+        		tank.x = Math.max(Math.min(tank.x, display.width - (30 + tankSprite.w)), 20);
+
+        		frames++;
+        		if (frames % levelFrame === 0) {
+        			spriteFrame = (spriteFrame + 1) % 2;
+
+        			var _max = 0, _min = display.width;
+
+        			for (var i = 0, len = aliens.length; i < len; i++) {
+        				var a = aliens[i];
+        				a.x += 30 * dir;
+
+        				_max = Math.max(_max, a.x + a.w);
+        				_min = Math.min(_min, a.x);
+        			}
+        			if (_max > display.width || _min < 20) {
+        				dir *= -1;
+        				for (var i = 0, len = aliens.length; i < len; i++) {
+        					aliens[i].x += 30 * dir;
+        					aliens[i].y += 30;
+        				}
+        			}
+        		}
+        	};
 
         	function render () {
-        		display.drawSprite(alienSprite[0][0], 10, 10);
+        		display.clear();
+
+        		for (var i = 0, len = aliens.length; i < len; i++) {
+        			var a = aliens[i];
+        			display.drawSprite(a.Sprite[spriteFrame], a.x, a.y);
+        		}
+
+        		display.drawSprite(tank.Sprite, tank.x, tank.y);
         	};
 
         	main();
