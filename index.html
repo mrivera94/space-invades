@@ -30,7 +30,7 @@
         			init();
         			run();
         		});
-        		img.src = "res/sprites.png";
+        		img.src = "res/sprite-sheet.png";
         	};
 
         	function init () {
@@ -81,7 +81,7 @@
         			tank.x += 4;
         		}
 
-        		tank.x = Math.max(Math.min(tank.x, display.width - (30 + tankSprite.w)), 20);
+        		tank.x = Math.max(Math.min(tank.x, display.width - (20 + tankSprite.w)), 20);
 
         		frames++;
         		if (frames % levelFrame === 0) {
