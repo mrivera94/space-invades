@@ -1,5 +1,20 @@
 // Helpers
 
+
+//Bullets
+function Bullet(x, y, velocity, w, h, color) {
+	this.x = x;
+	this.y =y;
+	this.velocity = velocity;
+	this.width = w;
+	this.height =h; 
+	this.color =color;
+};
+
+Bullet.prototype.update = function() {
+	this.y += this.velocity;
+};
+
 // Display
 function Display(width, height) {
 	this.canvas = document.createElement("canvas");
@@ -16,6 +31,13 @@ Display.prototype.clear = function () {
 Display.prototype.drawSprite = function(sp, x, y) {
 	this.context.drawImage(sp.img, sp.x, sp.y, sp.w, sp.h, x, y, sp.w, sp.h);
 };
+
+Display.prototype.drawBullet = function(bullet) {
+
+	this.context.fillStyle = bullet.color;
+	this.context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+};
+
 
 // Sprite
 function Sprite(img, x, y, w, h) {

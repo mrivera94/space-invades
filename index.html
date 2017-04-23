@@ -45,6 +45,8 @@
         			y: display.height - (30 + tankSprite.h)
         		}
 
+                bullets = [];
+
         		aliens = [];
         		var rows = [1, 0, 0, 2, 2];
         		for (var i = 0, len = rows.length; i < len; i++) {
@@ -73,15 +75,29 @@
 
         	function update () {
 
-        		if (input.isDown(37)) { //left
+                //tank control
+
+        		if (input.isDown(37)) { //left key
         			tank.x -= 4; 
         		}
 
-        		if (input.isDown(39)) { //right
+        		if (input.isDown(39)) { //right key
         			tank.x += 4;
         		}
 
         		tank.x = Math.max(Math.min(tank.x, display.width - (20 + tankSprite.w)), 20);
+
+                //display bullets
+
+                if (input.isPressed(32)) { //Space bar
+                    bullets.push(new Bullet(tank.x + 10, tank.y, -8, 2, 6, "red"))
+                }
+
+                //bullet tragectory
+
+                for (var i = 0, len = bullets.length; i < len; i++) {
+                    bullets[i].update();
+                }
 
         		frames++;
         		if (frames % levelFrame === 0) {
@@ -113,6 +129,12 @@
         			var a = aliens[i];
         			display.drawSprite(a.Sprite[spriteFrame], a.x, a.y);
         		}
+
+                display.context.save();
+                for (var i = 0, len = bullets.length; i < len; i++) {
+                    display.drawBullet(bullets[i]);
+                }
+                display.context.restore();
 
         		display.drawSprite(tank.Sprite, tank.x, tank.y);
         	};
