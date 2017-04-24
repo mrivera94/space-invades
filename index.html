@@ -62,7 +62,9 @@
                             this.context.drawImage(domeSprite.img, domeSprite.x, domeSprite.y, domeSprite.w, domeSprite.h, 68 + 111*i, 0, domeSprite.w, domeSprite.h);
                         }
                     },
-                    Damage: function(x, y){},
+                    //Damage: function(x, y){
+                    //    Math.
+                    //},
                     hits: function(x, y){}
                 };
                 domes.init();
@@ -109,7 +111,7 @@
 
                 //display bullets
 
-                if (input.isDown(32)) { //Space bar
+                if (input.isPressed(32)) { //Space bar
                     bullets.push(new Bullet(tank.x + 10, tank.y, -8, 2, 6, "red"))
                 }
 
