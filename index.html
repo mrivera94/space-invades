@@ -48,13 +48,24 @@
                 bullets = [];
 
                 domes = {
-                    canvas: null, 
+                    canvas: null,
+                    context: null, 
                     y: tank.y - (30 + domeSprite.h),
                     h: domeSprite.h,
-                    init: function(){},
+                    init: function(){
+                        this.canvas = document.createElement("canvas");
+                        this.canvas.width = display.width;
+                        this.canvas.height = this.h;
+                        this.context = this.canvas.getContext("2d");
+
+                        for (var i = 0; i < 4; i++) {
+                            this.context.drawImage(domeSprite.img, domeSprite.x, domeSprite.y, domeSprite.w, domeSprite.h, 68 + 111*i, 0, domeSprite.w, domeSprite.h);
+                        }
+                    },
                     Damage: function(x, y){},
                     hits: function(x, y){}
                 };
+                domes.init();
 
         		aliens = [];
         		var rows = [1, 0, 0, 2, 2];
@@ -181,6 +192,8 @@
                     display.drawBullet(bullets[i]);
                 }
                 display.context.restore();
+
+                display.context.drawImage(domes.canvas, 0, domes.y);
 
         		display.drawSprite(tank.Sprite, tank.x, tank.y);
         	};
