@@ -1,0 +1,12 @@
+This is a simple recreation of the Space invaders game using Javascript.
+The Purpose of this is to show that Javascript can be used to create 
+something fun!
+
+controls:
+right arrow > moves right
+left arrow > moves right
+space bar > shoots cannon
+
+current bugs:
+Enemies can accidently shoot and kill themselves and eachother :(
+
