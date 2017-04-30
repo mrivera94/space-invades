@@ -162,6 +162,15 @@
 
                     for (var j = 0, len2 = aliens.length; j < len2; j++) {
                         var a = aliens[j];
+                        
+                        if (a.y + a.height < 0 || a.y > display.height) {
+                            bullets.splice(j, 1);
+                            j--;
+                            len--;
+                            alert("you lose");
+                            continue;
+                        }; 
+
                         if (ABIntersection(b.x, b.y, b.width, b.height, a.x, a.y, a.w, a.h)) {
                             aliens.splice(j, 1);
                             j--;
