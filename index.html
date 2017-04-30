@@ -6,6 +6,16 @@
         <script src="js/helpers.js"></script>
     </head>
     <body>
+
+        <h1>Controls</h1>
+        <h3>Left & Right Arrows: To Move</h3>
+        <h3>Space Bar: To Shoot</h3>
+
+        <br>
+
+        <p>You are invincible but Earth is not.</p> 
+        <p>Destory all the invaders before they get passed you and conqure all of Earth!</p>
+
         <script>
 
         	var display, input, frames, spriteFrame, levelFrame;
@@ -61,11 +71,32 @@
                         for (var i = 0; i < 4; i++) {
                             this.context.drawImage(domeSprite.img, domeSprite.x, domeSprite.y, domeSprite.w, domeSprite.h, 68 + 111*i, 0, domeSprite.w, domeSprite.h);
                         }
+
                     },
-                    //Damage: function(x, y){
-                    //    Math.
-                    //},
-                    hits: function(x, y){}
+
+                    Damage: function(x, y){
+                        x = Math.floor(x/2) * 2;
+                        y = Math.floor(y/2) * 2;
+
+                        this.context.clearRect(x-2, y-2, 4, 4);
+                        this.context.clearRect(x+2, y-4, 2, 4);
+                        this.context.clearRect(x+4, y, 2, 2);
+                        this.context.clearRect(x+2, y+2, 2, 2);
+                        this.context.clearRect(x-4, y+2, 2, 2);
+                        this.context.clearRect(x-6, y, 2, 2);
+                        this.context.clearRect(x-4, y-4, 2, 2);
+                        this.context.clearRect(x-2, y-6, 2, 2);
+                    },
+
+                    hits: function(x, y){ 
+                        y -= this.y;
+                        var data = this.context.getImageData(x, y, 1, 1);
+                        if (data.data[3] !== 0) {
+                            this.Damage(x, y);
+                            return true;
+                        }
+                        return false;
+                    }
                 };
                 domes.init();
 
@@ -127,7 +158,7 @@
                         i--;
                         len--;
                         continue;
-                    }
+                    } 
 
                     for (var j = 0, len2 = aliens.length; j < len2; j++) {
                         var a = aliens[j];
@@ -137,7 +168,54 @@
                             len2--;
                             bullets.splice(i, 1);
                             i--;
+                            len--; 
+
+                            switch (len2) {
+                                case 30: {  
+                                    this.levelFrame = 40;
+                                    break;
+                                }
+                                case 10: {  
+                                    this.levelFrame = 20;
+                                    break;
+                                }
+                                case 5: {   
+                                    this.levelFrame = 15;
+                                    break;
+                                }
+                                case 1: {   
+                                    this.levelFrame = 6;
+                                    break;
+                                }
+
+                                case 0: {
+                                    alert("You are Earth's greatest Hero!");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    for (var k = 0, len3 = tank.length; k < len3;k++) {
+                        var t = tank[k];
+                        if (ABIntersection(b.x, b.y, b.width, b.height, t.x, t.y, t.w, t.h)) {
+                            tank.splice(k, 1);
+                            k--;
+                            len2--;
+                            bullets.splice(i, 1);
+                            i--;
                             len--;
+                        }
+                    }
+
+                    var h2 = b.height * 0.5;
+
+                    if (domes.y < b.y+h2 && b.y+h2 < domes.y + domes.h) {
+                        if (domes.hits(b.x, b.y+h2)) {
+                            bullets.splice(i, 1);
+                            i--;
+                            len--;
+                            continue;
                         }
                     }
                 }
@@ -156,6 +234,7 @@
                     }
 
                     bullets.push(new Bullet(a.x + a.w*0.5, a.y + a.h, 4, 2, 4, "blue"));
+
                 }
 
         		frames++;
